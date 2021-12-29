@@ -1,4 +1,4 @@
-package com.krish.foody
+package com.krish.foody.ui.fragments.recipes
 
 import android.os.Bundle
 import android.view.LayoutInflater
