@@ -7,14 +7,60 @@
     android:background="@color/lightGray"
     tools:context=".RecipesFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recipes"
+    <com.todkars.shimmer.ShimmerRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:shimmer_recycler_item_count="3"
+        app:shimmer_recycler_layout="@layout/placeholder_row_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_restaurant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/error_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:alpha="0.4"
+        android:src="@drawable/ic_sad"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38" />
+
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="No Internet Connection"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:alpha="0.5"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@+id/error_image"
+        app:layout_constraintRight_toRightOf="@+id/error_image"
+        app:layout_constraintTop_toBottomOf="@+id/error_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
