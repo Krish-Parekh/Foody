@@ -1,4 +1,4 @@
-package com.krish.foody
+package com.krish.foody.viewmodel
 
 import android.app.Application
 import android.content.Context
