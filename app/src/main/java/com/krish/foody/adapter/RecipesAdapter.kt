@@ -51,6 +51,7 @@ class RecipesAdapter(private val context : Context) : RecyclerView.Adapter<Recip
             }
             recipeImage.load(currentRecipe.image){
                 crossfade(600)
+                error(R.drawable.ic_error_placeholder)
             }
 
         }

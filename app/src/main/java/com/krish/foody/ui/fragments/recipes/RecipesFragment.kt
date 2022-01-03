@@ -1,6 +1,7 @@
 package com.krish.foody.ui.fragments.recipes
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,22 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.krish.foody.adapter.RecipesAdapter
 import com.krish.foody.databinding.FragmentRecipesBinding
+import com.krish.foody.models.FoodRecipe
 import com.krish.foody.util.NetworkResult
+import com.krish.foody.util.NetworkResult.Error
+import com.krish.foody.util.NetworkResult.Loading
+import com.krish.foody.util.NetworkResult.Success
+import com.krish.foody.util.observeOnce
 import com.krish.foody.viewmodel.MainViewModel
 import com.krish.foody.viewmodel.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+
+private const val TAG = "RecipesFragment"
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -37,16 +47,58 @@ class RecipesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentRecipesBinding.inflate(inflater, container, false)
+        readDatabase()
         setUpRecyclerView()
-        requestApiData()
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mViewModel.recipeResponse.observe(viewLifecycleOwner, Observer { networkResponse ->
+            mViewModel.readRecipe.observe(viewLifecycleOwner, Observer { database ->
+                if (networkResponse is Error && database.isNullOrEmpty()) {
+                    binding.errorImage.visibility = View.VISIBLE
+                    binding.errorMessage.visibility = View.VISIBLE
+                    binding.errorMessage.text = networkResponse.message.toString()
+                } else if (networkResponse is Loading) {
+                    binding.errorImage.visibility = View.INVISIBLE
+                    binding.errorMessage.visibility = View.INVISIBLE
+                } else if (networkResponse is Success) {
+                    binding.errorImage.visibility = View.INVISIBLE
+                    binding.errorMessage.visibility = View.INVISIBLE
+                }
+            })
+        })
+    }
+
+    private fun setUpRecyclerView() {
+        binding.recyclerView.adapter = mRecipeAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        showShimmerEffect()
+    }
+
+    private fun readDatabase() {
+        lifecycleScope.launch {
+            mViewModel.readRecipe.observeOnce(viewLifecycleOwner, Observer { database ->
+                if (database.isNotEmpty()) {
+                    Log.d(TAG, "readDatabase called!")
+                    mRecipeAdapter.setData(database[0].foodRecipe)
+                    hideShimmerEffect()
+                } else {
+                    requestApiData()
+                }
+            })
+        }
+    }
+
     private fun requestApiData() {
+        Log.d(TAG, "requestApiData called!")
         mViewModel.getRecipes(mRecipesViewModel.applyQueries())
         mViewModel.recipeResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
-                is NetworkResult.Success -> {
+                is Success -> {
+                    Log.d(TAG, "We went Inside this after switching on network")
                     hideShimmerEffect()
                     response.data?.let {
                         mRecipeAdapter.setData(it)
@@ -54,6 +106,7 @@ class RecipesFragment : Fragment() {
                 }
                 is NetworkResult.Error -> {
                     hideShimmerEffect()
+                    loadDataFromCache()
                     Toast.makeText(
                         requireContext(),
                         response.message.toString(),
@@ -61,18 +114,33 @@ class RecipesFragment : Fragment() {
                     ).show()
                 }
 
-                is NetworkResult.Loading -> {
+                is Loading -> {
                     showShimmerEffect()
                 }
             }
+            setResponse(response)
         })
     }
 
+    private fun setResponse(response: NetworkResult<FoodRecipe>?) {
+        if (response is NetworkResult.Error && mViewModel.readRecipe.value.isNullOrEmpty()) {
+            binding.errorImage.visibility = View.VISIBLE
+            binding.errorMessage.visibility = View.VISIBLE
+            binding.errorMessage.text = response.message
+        } else {
+            binding.errorImage.visibility = View.INVISIBLE
+            binding.errorMessage.visibility = View.INVISIBLE
+        }
+    }
 
-    private fun setUpRecyclerView() {
-        binding.recyclerView.adapter = mRecipeAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        showShimmerEffect()
+    private fun loadDataFromCache() {
+        lifecycleScope.launch {
+            mViewModel.readRecipe.observe(viewLifecycleOwner, Observer { database ->
+                if (database.isNotEmpty()) {
+                    mRecipeAdapter.setData(database[0].foodRecipe)
+                }
+            })
+        }
     }
 
 
@@ -83,6 +151,4 @@ class RecipesFragment : Fragment() {
     private fun hideShimmerEffect() {
         binding.recyclerView.hideShimmer()
     }
-
-
 }
