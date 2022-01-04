@@ -10,14 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.krish.foody.R
 import com.krish.foody.adapter.RecipesAdapter
 import com.krish.foody.databinding.FragmentRecipesBinding
 import com.krish.foody.models.FoodRecipe
 import com.krish.foody.util.NetworkResult
-import com.krish.foody.util.NetworkResult.Error
-import com.krish.foody.util.NetworkResult.Loading
-import com.krish.foody.util.NetworkResult.Success
+import com.krish.foody.util.NetworkResult.*
 import com.krish.foody.util.observeOnce
 import com.krish.foody.viewmodel.MainViewModel
 import com.krish.foody.viewmodel.RecipesViewModel
@@ -28,6 +29,9 @@ private const val TAG = "RecipesFragment"
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
+
+    private val args by navArgs<RecipesFragmentArgs>()
+
     private lateinit var mViewModel: MainViewModel
     private lateinit var mRecipesViewModel: RecipesViewModel
     private val mRecipeAdapter by lazy {
@@ -37,8 +41,8 @@ class RecipesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-        mRecipesViewModel = ViewModelProvider(requireActivity()).get(RecipesViewModel::class.java)
+        mViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+        mRecipesViewModel = ViewModelProvider(requireActivity())[RecipesViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -49,11 +53,6 @@ class RecipesFragment : Fragment() {
         binding = FragmentRecipesBinding.inflate(inflater, container, false)
         readDatabase()
         setUpRecyclerView()
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         mViewModel.recipeResponse.observe(viewLifecycleOwner, Observer { networkResponse ->
             mViewModel.readRecipe.observe(viewLifecycleOwner, Observer { database ->
@@ -70,6 +69,11 @@ class RecipesFragment : Fragment() {
                 }
             })
         })
+
+        binding.recipeFab.setOnClickListener {
+            findNavController().navigate(R.id.action_recipesFragment_to_recipesBottomSheet)
+        }
+        return binding.root
     }
 
     private fun setUpRecyclerView() {
@@ -81,7 +85,7 @@ class RecipesFragment : Fragment() {
     private fun readDatabase() {
         lifecycleScope.launch {
             mViewModel.readRecipe.observeOnce(viewLifecycleOwner, Observer { database ->
-                if (database.isNotEmpty()) {
+                if (database.isNotEmpty() && !args.backFromBottomSheet) {
                     Log.d(TAG, "readDatabase called!")
                     mRecipeAdapter.setData(database[0].foodRecipe)
                     hideShimmerEffect()
@@ -98,7 +102,6 @@ class RecipesFragment : Fragment() {
         mViewModel.recipeResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Success -> {
-                    Log.d(TAG, "We went Inside this after switching on network")
                     hideShimmerEffect()
                     response.data?.let {
                         mRecipeAdapter.setData(it)
