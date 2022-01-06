@@ -19,6 +19,12 @@
     <color name="yellow">#FFC114</color>
     <color name="green">#00C980</color>
 
+    // Light
+    <color name="backgroundColor">@color/lightGray</color>
+    <color name="placeholderColor">@color/mediumGray</color>
+    <color name="itemColor">@color/darker</color>
+    <color name="actionBarBackgroundColor">@color/colorPrimary</color>
+
     // Custom Chip Style
     <color name="checkedChipBackgroundColor">#206200EA</color>
     <color name="chipBackgroundColor">@color/lightGray</color>

@@ -2,10 +2,11 @@ package com.krish.foody.util
 
 class Constants {
     companion object {
-        const val API_KEY = "YOUR_API_KEY"
+        const val API_KEY = "d13bd0a3449c40259a6fa06ef09850fb"
         const val BASE_URL = "https://api.spoonacular.com"
 
         //API Query Keys
+        const val QUERY_SEARCH = "query"
         const val QUERY_NUMBER = "number"
         const val QUERY_API_KEY = "apiKey"
         const val QUERY_TYPE = "type"
@@ -27,5 +28,6 @@ class Constants {
         const val PREFERENCES_MEAL_TYPE_ID = "mealTypeId"
         const val PREFERENCES_DIET_TYPE = "dietType"
         const val PREFERENCES_DIET_TYPE_ID = "dietTypeId"
+        const val PREFERENCES_BACK_ONLINE = "backOnline"
     }
 }

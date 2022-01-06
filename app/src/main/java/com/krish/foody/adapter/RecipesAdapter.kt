@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,9 +14,16 @@ import coil.load
 import com.krish.foody.R
 import com.krish.foody.models.FoodRecipe
 import com.krish.foody.models.Result
+import com.krish.foody.ui.fragments.recipes.RecipesFragment
 import com.krish.foody.util.RecipesDiffUtil
+import org.jsoup.Jsoup
 
-class RecipesAdapter(private val context : Context) : RecyclerView.Adapter<RecipesAdapter.RecipesViewHolder>() {
+interface RBtnClick
+{
+    fun getRecipeOnClick(bundle : Result)
+}
+
+class RecipesAdapter(private val context : Context , private val listener : RecipesFragment) : RecyclerView.Adapter<RecipesAdapter.RecipesViewHolder>() {
 
     private var recipes = emptyList<Result>()
 
@@ -27,6 +35,7 @@ class RecipesAdapter(private val context : Context) : RecyclerView.Adapter<Recip
         val tvClock: TextView = itemView.findViewById(R.id.clock_textView)
         val leafImageView: ImageView = itemView.findViewById(R.id.leaf_imageView)
         val tvLeafVegan: TextView = itemView.findViewById(R.id.leaf_textView)
+        val recipeRowLayout : ConstraintLayout = itemView.findViewById(R.id.recipesRowLayout)
 
     }
 
@@ -41,7 +50,7 @@ class RecipesAdapter(private val context : Context) : RecyclerView.Adapter<Recip
             val currentRecipe = recipes[position]
 
             titleText.text = currentRecipe.title
-            tvDescription.text = currentRecipe.summary
+            tvDescription.text = Jsoup.parse(currentRecipe.summary).text()
             tvHeart.text = currentRecipe.aggregateLikes.toString()
             tvClock.text = currentRecipe.readyInMinutes.toString()
 
@@ -54,6 +63,9 @@ class RecipesAdapter(private val context : Context) : RecyclerView.Adapter<Recip
                 error(R.drawable.ic_error_placeholder)
             }
 
+            recipeRowLayout.setOnClickListener {
+                listener.getRecipeOnClick(currentRecipe)
+            }
         }
     }
 
