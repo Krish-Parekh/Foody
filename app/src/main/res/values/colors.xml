@@ -23,8 +23,11 @@
     <color name="backgroundColor">@color/lightGray</color>
     <color name="placeholderColor">@color/mediumGray</color>
     <color name="itemColor">@color/darker</color>
-    <color name="actionBarBackgroundColor">@color/colorPrimary</color>
 
+    <color name="actionBarBackgroundColor">@color/colorPrimary</color>
+    <color name="strokeColor">@color/lightMediumGray</color>
+    <color name="cardBackgroundColor">@color/white</color>
+    <color name="titleColor">@color/darker</color>
     // Custom Chip Style
     <color name="checkedChipBackgroundColor">#206200EA</color>
     <color name="chipBackgroundColor">@color/lightGray</color>

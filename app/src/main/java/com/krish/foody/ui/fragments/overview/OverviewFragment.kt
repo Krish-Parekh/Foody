@@ -1,6 +1,7 @@
 package com.krish.foody.ui.fragments.overview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.navArgs
 import coil.load
 import com.krish.foody.R
-import com.krish.foody.models.Result
 import com.krish.foody.databinding.FragmentOverviewBinding
+import com.krish.foody.models.Result
+import com.krish.foody.util.Constants.Companion.RECIPE_RESULT_KEY
 import org.jsoup.Jsoup
 
+private const val TAG = "OverViewFragment"
 
 class OverviewFragment : Fragment() {
 
@@ -28,7 +30,7 @@ class OverviewFragment : Fragment() {
         binding = FragmentOverviewBinding.inflate(inflater, container, false)
 
         val args = arguments
-        val myBundle : Result = args!!.getParcelable<Result>("recipesBundle") as Result
+        val myBundle: Result = args!!.getParcelable<Result>(RECIPE_RESULT_KEY) as Result
 
         binding.mainImageView.load(myBundle.image)
         binding.titleTextView.text = myBundle.title
@@ -45,6 +47,7 @@ class OverviewFragment : Fragment() {
 
         return binding.root
     }
+
     private fun updateColors(stateIsOn: Boolean, textView: TextView, imageView: ImageView) {
         if (stateIsOn) {
             imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.green))

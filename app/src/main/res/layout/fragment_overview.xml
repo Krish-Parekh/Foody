@@ -83,7 +83,7 @@
         android:layout_marginEnd="12dp"
         android:fontFamily="@font/courgette"
         android:text="Title"
-        android:textColor="@color/darkGray"
+        android:textColor="@color/titleColor"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

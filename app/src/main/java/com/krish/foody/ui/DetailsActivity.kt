@@ -12,6 +12,7 @@ import com.krish.foody.databinding.ActivityDetailsBinding
 import com.krish.foody.ui.fragments.ingredient.IngredientsFragment
 import com.krish.foody.ui.fragments.instruction.InstructionFragment
 import com.krish.foody.ui.fragments.overview.OverviewFragment
+import com.krish.foody.util.Constants.Companion.RECIPE_RESULT_KEY
 
 class DetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsBinding
@@ -38,7 +39,7 @@ class DetailsActivity : AppCompatActivity() {
 
 
         val resultBundle = Bundle()
-        resultBundle.putParcelable("recipesBundle", args.result)
+        resultBundle.putParcelable(RECIPE_RESULT_KEY , args.result)
 
         val adapter = PagerAdapter(resultBundle, fragments, titles, supportFragmentManager)
         binding.viewPager.adapter = adapter

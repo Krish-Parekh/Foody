@@ -10,9 +10,12 @@
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/fragment_favorite_recipes.xml" value="0.2957427536231884" />
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/fragment_food_joke.xml" value="0.2957427536231884" />
+        <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/fragment_ingredients.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/fragment_instruction.xml" value="0.36666666666666664" />
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/fragment_overview.xml" value="0.36666666666666664" />
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/fragment_recipes.xml" value="0.2957427536231884" />
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/fragment_recipes_bottom_sheet.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/ingredients_row_layout.xml" value="0.1" />
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/placeholder_row_layout.xml" value="0.2957427536231884" />
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/recipes_bottom_sheet.xml" value="0.2418645558487247" />
         <entry key="..\:/Android Practice/Foody/app/src/main/res/layout/recipes_row_layout.xml" value="0.5" />
