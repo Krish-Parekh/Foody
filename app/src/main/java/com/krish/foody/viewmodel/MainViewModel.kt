@@ -6,7 +6,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.lifecycle.*
 import com.krish.foody.data.Repository
-import com.krish.foody.data.database.RecipesEntity
+import com.krish.foody.data.database.entities.FavoritesEntity
+import com.krish.foody.data.database.entities.RecipesEntity
 import com.krish.foody.models.FoodRecipe
 import com.krish.foody.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,12 +24,32 @@ class MainViewModel @Inject constructor(
 
     /** Room Database */
 
-    val readRecipe: LiveData<List<RecipesEntity>> = repository.local.readDatabase().asLiveData()
+    val readRecipe: LiveData<List<RecipesEntity>> = repository.local.readRecipes().asLiveData()
+    val readFavoriteRecipe: LiveData<List<FavoritesEntity>> =
+        repository.local.readFavoriteRecipes().asLiveData()
 
-    private fun insertRecipes(recipesEntity: RecipesEntity) =
+    fun insertRecipes(recipesEntity: RecipesEntity) =
         viewModelScope.launch(Dispatchers.IO) {
             repository.local.insertRecipes(recipesEntity)
         }
+
+    fun insertFavoriteRecipes(favoritesEntity: FavoritesEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.insertFavoriteRecipes(favoritesEntity)
+        }
+    }
+
+    fun deleteFavoriteRecipes(favoritesEntity: FavoritesEntity) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.deleteFavoriteRecipes(favoritesEntity)
+        }
+    }
+
+    fun deleteAllFavoriteRecipes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.deleteAllFavoriteRecipes()
+        }
+    }
 
 
     /** Retrofit */
@@ -39,12 +60,12 @@ class MainViewModel @Inject constructor(
         getRecipesSafeCall(queries)
     }
 
-    fun searchRecipes(searchQuery : Map<String, String>) =
+    fun searchRecipes(searchQuery: Map<String, String>) =
         viewModelScope.launch {
             searchRecipesSafeCall(searchQuery)
         }
 
-    private suspend fun searchRecipesSafeCall(searchQuery : Map<String, String>) {
+    private suspend fun searchRecipesSafeCall(searchQuery: Map<String, String>) {
         searchedRecipesResponse.value = NetworkResult.Loading()
         if (hasInternetConnection()) {
             try {
@@ -65,7 +86,7 @@ class MainViewModel @Inject constructor(
                 val response = repository.remote.getRecipes(queries)
                 recipeResponse.value = handleFoodRecipeResponse(response)
                 val foodRecipe = recipeResponse.value!!.data
-                if (foodRecipe != null){
+                if (foodRecipe != null) {
                     offlineCacheRecipes(foodRecipe)
                 }
             } catch (e: Exception) {

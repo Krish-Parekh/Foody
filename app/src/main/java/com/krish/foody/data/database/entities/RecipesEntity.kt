@@ -1,4 +1,4 @@
-package com.krish.foody.data.database
+package com.krish.foody.data.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
