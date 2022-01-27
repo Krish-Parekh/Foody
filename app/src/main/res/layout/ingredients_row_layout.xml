@@ -39,6 +39,7 @@
                 android:id="@+id/ingredient_imageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:background="@color/white"
                 app:layout_constraintStart_toStartOf="@+id/white_background"
                 app:layout_constraintEnd_toEndOf="@+id/white_background"
                 app:layout_constraintTop_toTopOf="@+id/white_background"
