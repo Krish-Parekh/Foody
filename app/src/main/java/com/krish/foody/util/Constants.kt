@@ -2,7 +2,7 @@ package com.krish.foody.util
 
 class Constants {
     companion object {
-        const val API_KEY = "d13bd0a3449c40259a6fa06ef09850fb"
+        const val API_KEY = "YOUR_API_KEY"
         const val BASE_URL = "https://api.spoonacular.com"
         const val BASE_IMAGE_URL = "https://spoonacular.com/cdn/ingredients_100x100/"
         const val RECIPE_RESULT_KEY = "recipesBundle"
@@ -19,6 +19,8 @@ class Constants {
         // ROOM database
         const val DATABASE_NAME = "recipes_database"
         const val RECIPES_TABLE = "recipes_table"
+        const val FAVORITE_RECIPES_TABLE ="favorite_recipes_table"
+        const val FOOD_JOKE_TABLE = "food_joke_table"
 
         // Bottom Sheet and Preferences
         const val DEFAULT_RECIPES_NUMBER = "50"
