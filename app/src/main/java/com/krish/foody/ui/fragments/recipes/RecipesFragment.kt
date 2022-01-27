@@ -96,6 +96,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener, RBtnClick {
                 mRecipesViewModel.showNetworkStatus()
             }
         }
+
         return binding.root
     }
 

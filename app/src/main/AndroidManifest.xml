@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Foody">
+        android:theme="@style/SplashScreenStyle">
         <activity
             android:name=".ui.DetailsActivity"
             android:exported="false"
