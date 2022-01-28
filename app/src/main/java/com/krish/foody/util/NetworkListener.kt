@@ -14,19 +14,16 @@ class NetworkListener : ConnectivityManager.NetworkCallback() {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.registerDefaultNetworkCallback(this)
 
-        val network =
-            connectivityManager.activeNetwork
+        val network = connectivityManager.activeNetwork
         if (network == null) {
             isNetworkAvailable.value = false
             return isNetworkAvailable
         }
-
         val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
         if (networkCapabilities == null) {
             isNetworkAvailable.value = false
             return isNetworkAvailable
         }
-
         return when {
             networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
                 isNetworkAvailable.value = true

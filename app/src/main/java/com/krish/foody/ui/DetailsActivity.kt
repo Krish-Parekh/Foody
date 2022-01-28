@@ -57,6 +57,7 @@ class DetailsActivity : AppCompatActivity() {
         resultBundle.putParcelable(RECIPE_RESULT_KEY, args.result)
 
         val pagerAdapter = PagerAdapter(resultBundle, fragments, this)
+        binding.viewPager2.isUserInputEnabled = false
         binding.viewPager2.apply {
             adapter = pagerAdapter
         }

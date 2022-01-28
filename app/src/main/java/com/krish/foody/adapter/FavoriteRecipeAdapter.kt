@@ -38,7 +38,7 @@ class FavoriteRecipeAdapter(
     private var myViewHolders = arrayListOf<FavoriteRecipeViewHolder>()
     private var selectedRecipes = arrayListOf<FavoritesEntity>()
     private lateinit var mActionMode: ActionMode
-    private lateinit var rootView : View
+    private lateinit var rootView: View
 
     inner class FavoriteRecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val recipeImage: ImageView = itemView.findViewById(R.id.favorite_recipe_imageView)
@@ -66,6 +66,7 @@ class FavoriteRecipeAdapter(
             tvDescription.text = Jsoup.parse(currentRecipe.summary).text()
             tvHeart.text = currentRecipe.aggregateLikes.toString()
             tvClock.text = currentRecipe.readyInMinutes.toString()
+            saveItemStateOnScroll(holder, favoriteRecipe[position])
 
             if (currentRecipe.vegan) {
                 tvLeafVegan.setTextColor(ContextCompat.getColor(context, R.color.green))
@@ -93,12 +94,24 @@ class FavoriteRecipeAdapter(
                     applySelection(holder, favoriteRecipe[position])
                     true
                 } else {
-                    multiSelection = false
-                    false
+                    applySelection(holder, favoriteRecipe[position])
+                    true
                 }
             }
         }
     }
+
+    private fun saveItemStateOnScroll(
+        holder: FavoriteRecipeViewHolder,
+        currentRecipe: FavoritesEntity
+    ) {
+        if (selectedRecipes.contains(currentRecipe)) {
+            changeRecipeStyle(holder, R.color.cardBackgroundLightColor, R.color.colorPrimary)
+        } else {
+            changeRecipeStyle(holder, R.color.cardBackgroundColor, R.color.strokeColor)
+        }
+    }
+
 
     private fun applySelection(holder: FavoriteRecipeViewHolder, currentRecipe: FavoritesEntity) {
         if (selectedRecipes.contains(currentRecipe)) {
@@ -126,15 +139,16 @@ class FavoriteRecipeAdapter(
 
     }
 
-    private fun applyActionModeTitle(){
-        when(selectedRecipes.size){
-             0 -> {
-                 mActionMode.finish()
-             }
-            1 ->{
+    private fun applyActionModeTitle() {
+        when (selectedRecipes.size) {
+            0 -> {
+                mActionMode.finish()
+                multiSelection = false
+            }
+            1 -> {
                 mActionMode.title = "${selectedRecipes.size} item selected"
             }
-            else ->{
+            else -> {
                 mActionMode.title = "${selectedRecipes.size} items selected"
             }
         }
@@ -154,8 +168,8 @@ class FavoriteRecipeAdapter(
     }
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.delete_favorite_recipe){
-            selectedRecipes.forEach{
+        if (item?.itemId == R.id.delete_favorite_recipe) {
+            selectedRecipes.forEach {
                 mainViewModel.deleteFavoriteRecipes(it)
             }
             showSnackBar("${selectedRecipes.size} Recipes removed")
@@ -187,16 +201,16 @@ class FavoriteRecipeAdapter(
         diffUtilResult.dispatchUpdatesTo(this)
     }
 
-    private fun showSnackBar(message : String){
+    private fun showSnackBar(message: String) {
         Snackbar.make(
             rootView,
             message,
             Snackbar.LENGTH_SHORT
-        ).setAction("Okay"){}.show()
+        ).setAction("Okay") {}.show()
     }
 
-    fun clearContextualActionMode(){
-        if(this::mActionMode.isInitialized){
+    fun clearContextualActionMode() {
+        if (this::mActionMode.isInitialized) {
             mActionMode.finish()
         }
     }

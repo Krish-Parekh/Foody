@@ -41,4 +41,5 @@
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet,et cons Ac turpienectus et netus et malesuada.</string>
     <string name="error">Error</string>
     <string name="share">share</string>
+    <string name="recipesbottomsheet">RecipesBottomSheet</string>
 </resources>

@@ -61,7 +61,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener, RBtnClick {
         })
 
         networkListener = NetworkListener()
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             networkListener.checkNetworkAvailability(requireContext())
                 .collect { status ->
                     Log.d("NetworkListener", status.toString())
@@ -101,8 +101,8 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener, RBtnClick {
     }
 
     private fun setUpRecyclerView() {
-        binding.recyclerView.adapter = mRecipeAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerview.adapter = mRecipeAdapter
+        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         showShimmerEffect()
     }
 
@@ -148,6 +148,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener, RBtnClick {
                     hideShimmerEffect()
                     response.data?.let {
                         mRecipeAdapter.setData(it)
+                        mRecipesViewModel.saveMealAndDietType()
                     }
                 }
                 is Error -> {
@@ -219,11 +220,14 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener, RBtnClick {
 
 
     private fun showShimmerEffect() {
-        binding.recyclerView.showShimmer()
+        binding.shimmerFrameLayout.startShimmer()
+        binding.recyclerview.visibility = View.GONE
     }
 
     private fun hideShimmerEffect() {
-        binding.recyclerView.hideShimmer()
+        binding.shimmerFrameLayout.stopShimmer()
+        binding.recyclerview.visibility = View.VISIBLE
+
     }
 
     override fun getRecipeOnClick(bundle: Result) {
