@@ -10,7 +10,10 @@ The following **required** functionality is completed:
 * [x] Search Cuisines
 * [x] Offline Caching 
 * [x] Food Joke  
-* [x] Save recipes locally  
+* [x] Save recipes to database 
+
+## API
+* [x] Spoonacular API : https://spoonacular.com/food-api 
 
 ## Library 
 * [x] Coil: https://coil-kt.github.io/coil/ 
