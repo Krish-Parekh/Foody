@@ -8,10 +8,11 @@ The following **required** functionality is completed:
 * [x] List Cuisines
 * [x] Apply filter based on your diet plan
 * [x] Search Cuisines
-* [x] It Cache your data if offline 
+* [x] Offline Caching 
+* [x] Food Joke  
+* [x] Save recipes locally  
 
-
-## Library used
+## Library 
 * [x] Coil: https://coil-kt.github.io/coil/ 
 * [x] Shimmer: https://facebook.github.io/shimmer-android/
 * [x] Jsoup: https://jsoup.org/download 
