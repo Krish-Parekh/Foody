@@ -5,11 +5,10 @@
 
 The following **required** functionality is completed:
 
-* [x] List Cuisines
-* [x] Apply filter based on your diet plan
-* [x] Search Cuisines
+* [x] Explore Cuisines based on your interest
+* [x] Apply filter according to your diet plan
+* [x] Relish the foody jokes
 * [x] Offline Caching 
-* [x] Food Joke  
 * [x] Save recipes to database 
 
 ## API
