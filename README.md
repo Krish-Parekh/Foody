@@ -3,7 +3,7 @@
 
 ## Functionality  
 
-The following **required** functionality is completed:
+The following **functionality** is completed:
 
 * [x] Explore Cuisines based on your interest
 * [x] Apply filter according to your diet plan
